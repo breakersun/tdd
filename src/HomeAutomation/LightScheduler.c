@@ -12,6 +12,7 @@ typedef struct
     int id;
     int event;
     int minuteOfDay;
+    int day;
 } ScheduledLightEvent;
 
 static ScheduledLightEvent scheduledEvent;
@@ -42,6 +43,9 @@ static void processEventDueNow(Time *time, ScheduledLightEvent *lightevent)
     if(lightevent->minuteOfDay != time->minuteOfDay)
         return;
 
+    if(lightevent->day != EVERYDAY)
+        return;
+
     operateLight(lightevent);
 }
 
@@ -53,19 +57,20 @@ void LightScheduler_Wakeup(void)
     processEventDueNow(&time, &scheduledEvent);
 }
 
-static void scheduleEvent(int id, int event, int minutes)
+static void scheduleEvent(int id, int event, int minutes, int day)
 {
     scheduledEvent.id           = id;
     scheduledEvent.event        = event;
     scheduledEvent.minuteOfDay  = minutes;
+    scheduledEvent.day          = day;
 }
 
 void LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
 {
-    scheduleEvent(id, TURN_ON, minutes);
+    scheduleEvent(id, TURN_ON, minutes, day);
 }
 
 void LightScheduler_ScheduleTurnOff(int id, int day, int minutes)
 {
-    scheduleEvent(id, TURN_OFF, minutes);
+    scheduleEvent(id, TURN_OFF, minutes, day);
 }
