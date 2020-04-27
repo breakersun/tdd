@@ -10,3 +10,5 @@ objs/tests/HomeAutomation/LightControllerSpy.d
 objs/tests/HomeAutomation/LightControllerSpy.o
 objs/tests/HomeAutomation/LightControllerSpyTest.d
 objs/tests/HomeAutomation/LightControllerSpyTest.o
+objs/tests/HomeAutomation/LightSchedulerTest.d
+objs/tests/HomeAutomation/LightSchedulerTest.o
