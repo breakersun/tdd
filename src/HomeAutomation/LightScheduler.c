@@ -26,21 +26,31 @@ void LightScheduler_Destroy(void)
 
 }
 
+static void operateLight(ScheduledLightEvent *lightevent)
+{
+    if(lightevent->event == TURN_ON)
+        LightController_On(lightevent->id);
+    else if(lightevent->event == TURN_OFF)
+        LightController_Off(lightevent->id);
+}
+
+static void processEventDueNow(Time *time, ScheduledLightEvent *lightevent)
+{
+    if(lightevent->id == UNUSED)
+        return;
+
+    if(lightevent->minuteOfDay != time->minuteOfDay)
+        return;
+
+    operateLight(lightevent);
+}
+
 void LightScheduler_Wakeup(void)
 {
     Time time;
     TimeService_GetTime(&time);
 
-    if (scheduledEvent.id == UNUSED)
-        return;
-    
-    if(time.minuteOfDay != scheduledEvent.minuteOfDay)
-        return;
-
-    if(scheduledEvent.event == TURN_ON)
-        LightController_On(scheduledEvent.id);
-    else if(scheduledEvent.event == TURN_OFF)
-        LightController_Off(scheduledEvent.id);
+    processEventDueNow(&time, &scheduledEvent);
 }
 
 static void scheduleEvent(int id, int event, int minutes)
