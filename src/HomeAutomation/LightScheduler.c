@@ -1,5 +1,6 @@
 #include "LightScheduler.h"
 #include "LightController.h"
+#include "common.h"
 
 enum
 {
@@ -35,20 +36,30 @@ static void operateLight(ScheduledLightEvent *lightevent)
         LightController_Off(lightevent->id);
 }
 
+static int DoesLightRespondToday(Time *time, int reactionDay)
+{
+    int today = time->dayOfWeek;
+
+    if(reactionDay == EVERYDAY)
+        return TRUE;
+    if(reactionDay == today)
+        return TRUE;
+    if(reactionDay == WEEKEND && (today == SATURDAY || today == SUNDAY))
+        return TRUE;
+    if(reactionDay == WEEKDAY && (today >= MONDAY && today <= FRIDAY))
+        return TRUE;
+    return FALSE;
+}
+
 static void processEventDueNow(Time *time, ScheduledLightEvent *lightevent)
 {
-    int actionDay   = lightevent->dayOfWeek;
-    int today       = time->dayOfWeek;
-
     if(lightevent->id == UNUSED)
         return;
-
+    if(!DoesLightRespondToday(time, lightevent->dayOfWeek))
+        return;
     if(lightevent->minuteOfDay != time->minuteOfDay)
         return;
-
-    if(actionDay != EVERYDAY && actionDay != today)
-        return;
-
+    
     operateLight(lightevent);
 }
 

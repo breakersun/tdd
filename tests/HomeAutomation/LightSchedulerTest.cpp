@@ -87,3 +87,19 @@ TEST(LightScheduler, ScheduleTuesdayItsTuesday)
     LightScheduler_Wakeup();
     checkLedState(3, LIGHT_OFF);    
 }
+
+TEST(LightScheduler, ScheduleWeekendButItsFriday)
+{
+    LightScheduler_ScheduleTurnOn(3, WEEKEND, 1200);
+    setTimeTo(FRIDAY, 1200);
+    LightScheduler_Wakeup();
+    checkLedState(LIGHT_ID_UNKNOWN, LIGHT_STATE_UNKNOWN);
+}
+
+TEST(LightScheduler, ScheduleWeekendAndItsSunday)
+{
+    LightScheduler_ScheduleTurnOn(3, WEEKEND, 1200);
+    setTimeTo(SUNDAY, 1200);
+    LightScheduler_Wakeup();
+    checkLedState(3, LIGHT_ON);   
+}
