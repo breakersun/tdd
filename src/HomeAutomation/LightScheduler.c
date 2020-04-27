@@ -4,11 +4,13 @@
 enum
 {
     UNUSED = -1,
+    TURN_OFF, TURN_ON,
 };
 
 typedef struct
 {
     int id;
+    int event;
     int minuteOfDay;
 } ScheduledLightEvent;
 
@@ -35,11 +37,22 @@ void LightScheduler_Wakeup(void)
     if(time.minuteOfDay != scheduledEvent.minuteOfDay)
         return;
 
-    LightController_On(scheduledEvent.id);
+    if(scheduledEvent.event == TURN_ON)
+        LightController_On(scheduledEvent.id);
+    else if(scheduledEvent.event == TURN_OFF)
+        LightController_Off(scheduledEvent.id);
 }
 
 void LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
 {
     scheduledEvent.id           = id;
+    scheduledEvent.event        = TURN_ON;
+    scheduledEvent.minuteOfDay  = minutes;
+}
+
+void LightScheduler_ScheduleTurnOff(int id, int day, int minutes)
+{
+    scheduledEvent.id           = id;
+    scheduledEvent.event        = TURN_OFF;
     scheduledEvent.minuteOfDay  = minutes;
 }

@@ -65,3 +65,16 @@ TEST(LightScheduler, ScheduleOnEverydayItsTime)
     LONGS_EQUAL(3, LightControllerSpy_GetLastId());
     LONGS_EQUAL(LIGHT_ON, LightControllerSpy_GetLastState());
 }
+
+TEST(LightScheduler, ScheduleOffEverydayItsTime)
+{
+    LightScheduler_ScheduleTurnOff(18, EVERYDAY, 1200);
+
+    FakeTimeService_SetDay(MONDAY);
+    FakeTimeService_SetMinute(1200);
+
+    LightScheduler_Wakeup();
+    
+    LONGS_EQUAL(18, LightControllerSpy_GetLastId());
+    LONGS_EQUAL(LIGHT_OFF, LightControllerSpy_GetLastState());
+}
