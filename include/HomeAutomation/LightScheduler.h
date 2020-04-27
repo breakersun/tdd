@@ -1,6 +1,7 @@
 #ifndef __LIGHTSCHEDULER_H__
 #define __LIGHTSCHEDULER_H__
 
+#include "TimeService.h"
 
 typedef enum
 {
