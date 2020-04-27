@@ -7,7 +7,8 @@ typedef struct Time
     int dayOfWeek;
 } Time;
 
-void TimeService_Creat(void);
+void TimeService_Create(void);
 void TimeService_Destroy(void);
+void TimeService_GetTime(Time *time);
 
 #endif

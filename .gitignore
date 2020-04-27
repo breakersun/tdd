@@ -1,0 +1,12 @@
+My_CppUTest_tests
+lib/libMy_CppUTest.a
+objs/tests/AllTests.d
+objs/tests/AllTests.o
+objs/tests/HomeAutomation/FakeTimeService.d
+objs/tests/HomeAutomation/FakeTimeService.o
+objs/tests/HomeAutomation/FakeTimeServiceTest.d
+objs/tests/HomeAutomation/FakeTimeServiceTest.o
+objs/tests/HomeAutomation/LightControllerSpy.d
+objs/tests/HomeAutomation/LightControllerSpy.o
+objs/tests/HomeAutomation/LightControllerSpyTest.d
+objs/tests/HomeAutomation/LightControllerSpyTest.o
