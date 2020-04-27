@@ -12,7 +12,7 @@ typedef struct
     int id;
     int event;
     int minuteOfDay;
-    int day;
+    int dayOfWeek;
 } ScheduledLightEvent;
 
 static ScheduledLightEvent scheduledEvent;
@@ -37,13 +37,16 @@ static void operateLight(ScheduledLightEvent *lightevent)
 
 static void processEventDueNow(Time *time, ScheduledLightEvent *lightevent)
 {
+    int actionDay   = lightevent->dayOfWeek;
+    int today       = time->dayOfWeek;
+
     if(lightevent->id == UNUSED)
         return;
 
     if(lightevent->minuteOfDay != time->minuteOfDay)
         return;
 
-    if(lightevent->day != EVERYDAY)
+    if(actionDay != EVERYDAY && actionDay != today)
         return;
 
     operateLight(lightevent);
@@ -62,7 +65,7 @@ static void scheduleEvent(int id, int event, int minutes, int day)
     scheduledEvent.id           = id;
     scheduledEvent.event        = event;
     scheduledEvent.minuteOfDay  = minutes;
-    scheduledEvent.day          = day;
+    scheduledEvent.dayOfWeek    = day;
 }
 
 void LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
