@@ -35,3 +35,8 @@ void LightController_Off(int Id)
     lastId      = Id;
     lastState   = LIGHT_OFF;
 }
+
+int LightControllerSpy_GetLightState(int id)
+{
+    return lastState;
+}
