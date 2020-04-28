@@ -104,13 +104,13 @@ int LightScheduler_ScheduleTurnOff(int id, int day, int minutes)
 
 void LightScheduler_ScheduleRemove(int id, int day, int minutes)
 {
-    for (int i; i < MAX_EVENTS; i++)
+    for (int i = 0; i < MAX_EVENTS; i++)
     {
         if (scheduledEvents[i].id           == id 
          && scheduledEvents[i].dayOfWeek    == day 
          && scheduledEvents[i].minuteOfDay  == minutes)
         {
-            scheduledEvents[i].id == UNUSED;
+            scheduledEvents[i].id = UNUSED;
         }
     }
 }
