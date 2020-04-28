@@ -16,13 +16,10 @@ typedef struct
     int dayOfWeek;
 } ScheduledLightEvent;
 
-static ScheduledLightEvent scheduledEvent;
 static ScheduledLightEvent scheduledEvents[MAX_EVENTS];
 
 void LightScheduler_Create(void)
 {
-    scheduledEvent.id = UNUSED;
-
     for(int i = 0; i < MAX_EVENTS; i++)
         scheduledEvents[i].id = UNUSED;
 
@@ -31,7 +28,6 @@ void LightScheduler_Create(void)
 
 void LightScheduler_Destroy(void)
 {
-    scheduledEvent.id = UNUSED;
     TimerService_CancelPeriodAlarmInSeconds(60, LightScheduler_Wakeup);
 }
 
@@ -77,8 +73,6 @@ void LightScheduler_Wakeup(void)
 
     for (int i = 0; i < MAX_EVENTS; i++)
         processEventDueNow(&time, &scheduledEvents[i]);
-
-    processEventDueNow(&time, &scheduledEvent);
 }
 
 static void scheduleEvent(int id, int event, int minutes, int day)
@@ -94,10 +88,6 @@ static void scheduleEvent(int id, int event, int minutes, int day)
             break;
         }
     }
-    scheduledEvent.id           = id;
-    scheduledEvent.event        = event;
-    scheduledEvent.minuteOfDay  = minutes;
-    scheduledEvent.dayOfWeek    = day;
 }
 
 void LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
