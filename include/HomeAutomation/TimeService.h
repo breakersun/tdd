@@ -7,8 +7,12 @@ typedef struct Time
     int dayOfWeek;
 } Time;
 
+typedef void (*WakeUpCallback)(void);
+
 void TimeService_Create(void);
 void TimeService_Destroy(void);
 void TimeService_GetTime(Time *time);
+void TimerService_SetPeriodAlarmInSeconds(int seconds, WakeUpCallback callback);
+void TimerService_CancelPeriodAlarmInSeconds(int seconds, WakeUpCallback callback);
 
 #endif

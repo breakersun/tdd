@@ -103,3 +103,21 @@ TEST(LightScheduler, ScheduleWeekendAndItsSunday)
     LightScheduler_Wakeup();
     checkLedState(3, LIGHT_ON);   
 }
+
+TEST_GROUP(LightSchedulerInitAndCleanup)
+{};
+
+TEST(LightSchedulerInitAndCleanup, CreateStartsOneMinuteAlarm)
+{
+    LightScheduler_Create();
+    POINTERS_EQUAL((void *)LightScheduler_Wakeup, (void *)FakeTimeService_GetAlarmCallback());
+    LONGS_EQUAL(60, FakeTimeService_GetAlarmPeriod());
+}
+
+TEST(LightSchedulerInitAndCleanup, DestroyCancelsOneMinuteAlarm)
+{
+    LightScheduler_Create();
+    LightScheduler_Destroy();
+    POINTERS_EQUAL(NULL, (void *)FakeTimeService_GetAlarmCallback());
+    LONGS_EQUAL(0, FakeTimeService_GetAlarmPeriod());
+}

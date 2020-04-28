@@ -1,6 +1,8 @@
 #include "FakeTimeService.h"
 
 static Time fakeTime;
+static WakeUpCallback callback;
+static int period;
 
 void TimeService_Create(void)
 {
@@ -27,4 +29,28 @@ void FakeTimeService_SetMinute(int minute)
 void FakeTimeService_SetDay(int day)
 {
     fakeTime.dayOfWeek      = day;
+}
+
+void TimerService_SetPeriodAlarmInSeconds(int seconds, WakeUpCallback cb)
+{
+    period      = seconds;
+    callback    = cb;
+}
+void TimerService_CancelPeriodAlarmInSeconds(int seconds, WakeUpCallback cb)
+{
+    if(cb == callback && period == seconds)
+    {
+        callback    = NULL;
+        period      = 0;
+    }
+}
+
+WakeUpCallback FakeTimeService_GetAlarmCallback(void)
+{
+    return callback;
+}
+
+int FakeTimeService_GetAlarmPeriod(void)
+{
+    return period;
 }
