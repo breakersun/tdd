@@ -10,10 +10,12 @@ typedef enum
     MAX_EVENTS = 128
 } Day;
 
+enum { LS_OK, LS_TOO_MANY_EVENTS, LS_ID_OUT_OF_BOUNDS };
+
 void LightScheduler_Create(void);
 void LightScheduler_Destroy(void);
 void LightScheduler_Wakeup(void);
-void LightScheduler_ScheduleTurnOn(int id, int day, int minutes);
-void LightScheduler_ScheduleTurnOff(int id, int day, int minutes);
+int LightScheduler_ScheduleTurnOn(int id, int day, int minutes);
+int LightScheduler_ScheduleTurnOff(int id, int day, int minutes);
 
 #endif

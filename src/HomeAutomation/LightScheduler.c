@@ -75,7 +75,7 @@ void LightScheduler_Wakeup(void)
         processEventDueNow(&time, &scheduledEvents[i]);
 }
 
-static void scheduleEvent(int id, int event, int minutes, int day)
+static int scheduleEvent(int id, int event, int minutes, int day)
 {
     for (int i = 0; i < MAX_EVENTS; i++)
     {
@@ -85,17 +85,19 @@ static void scheduleEvent(int id, int event, int minutes, int day)
             scheduledEvents[i].event        = event;
             scheduledEvents[i].minuteOfDay  = minutes;
             scheduledEvents[i].dayOfWeek    = day;
-            break;
+            return LS_OK;
         }
     }
+
+    return LS_TOO_MANY_EVENTS;
 }
 
-void LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
+int LightScheduler_ScheduleTurnOn(int id, int day, int minutes)
 {
-    scheduleEvent(id, TURN_ON, minutes, day);
+    return scheduleEvent(id, TURN_ON, minutes, day);
 }
 
-void LightScheduler_ScheduleTurnOff(int id, int day, int minutes)
+int LightScheduler_ScheduleTurnOff(int id, int day, int minutes)
 {
-    scheduleEvent(id, TURN_OFF, minutes, day);
+    return scheduleEvent(id, TURN_OFF, minutes, day);
 }
