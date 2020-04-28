@@ -31,8 +31,13 @@ TEST_GROUP(LightScheduler)
 
     void checkLedState(int id, int level)
     {
-        LONGS_EQUAL(id, LightControllerSpy_GetLastId());
-        LONGS_EQUAL(level, LightControllerSpy_GetLastState());
+        if (id == LIGHT_ID_UNKNOWN)
+        {
+            LONGS_EQUAL(id, LightControllerSpy_GetLastId());
+            LONGS_EQUAL(level, LightControllerSpy_GetLastState());
+        }
+        else
+            LONGS_EQUAL(level, LightControllerSpy_GetLightState(id));
     }
 };
 
@@ -102,6 +107,16 @@ TEST(LightScheduler, ScheduleWeekendAndItsSunday)
     setTimeTo(SUNDAY, 1200);
     LightScheduler_Wakeup();
     checkLedState(3, LIGHT_ON);   
+}
+
+TEST(LightScheduler, ScheduleTwoEventsAtTheSameTime)
+{
+    LightScheduler_ScheduleTurnOn(3, WEEKEND, 1200);
+    LightScheduler_ScheduleTurnOn(12, WEEKEND, 1200);
+    setTimeTo(SUNDAY, 1200);
+    LightScheduler_Wakeup();
+    checkLedState(3, LIGHT_ON);
+    checkLedState(12, LIGHT_ON);
 }
 
 TEST_GROUP(LightSchedulerInitAndCleanup)

@@ -29,7 +29,7 @@ int LightControllerSpy_GetLastState(void)
 
 static int isIdInRange(int id)
 {
-    return (id >= 0 && id <= MAX_LIGHTS - 1);
+    return (id >= 0 && id < MAX_LIGHTS);
 }
 
 void LightController_On(int Id)

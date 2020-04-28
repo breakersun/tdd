@@ -17,10 +17,15 @@ typedef struct
 } ScheduledLightEvent;
 
 static ScheduledLightEvent scheduledEvent;
+static ScheduledLightEvent scheduledEvents[MAX_EVENTS];
 
 void LightScheduler_Create(void)
 {
     scheduledEvent.id = UNUSED;
+
+    for(int i = 0; i < MAX_EVENTS; i++)
+        scheduledEvents[i].id = UNUSED;
+
     TimerService_SetPeriodAlarmInSeconds(60, LightScheduler_Wakeup);
 }
 
@@ -70,11 +75,25 @@ void LightScheduler_Wakeup(void)
     Time time;
     TimeService_GetTime(&time);
 
+    for (int i = 0; i < MAX_EVENTS; i++)
+        processEventDueNow(&time, &scheduledEvents[i]);
+
     processEventDueNow(&time, &scheduledEvent);
 }
 
 static void scheduleEvent(int id, int event, int minutes, int day)
 {
+    for (int i = 0; i < MAX_EVENTS; i++)
+    {
+        if (scheduledEvents[i].id == UNUSED)
+        {
+            scheduledEvents[i].id           = id;
+            scheduledEvents[i].event        = event;
+            scheduledEvents[i].minuteOfDay  = minutes;
+            scheduledEvents[i].dayOfWeek    = day;
+            break;
+        }
+    }
     scheduledEvent.id           = id;
     scheduledEvent.event        = event;
     scheduledEvent.minuteOfDay  = minutes;
