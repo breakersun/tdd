@@ -77,6 +77,9 @@ void LightScheduler_Wakeup(void)
 
 static int scheduleEvent(int id, int event, int minutes, int day)
 {
+    if (id < 0 || id >= MAX_LIGHTS)
+        return LS_ID_OUT_OF_BOUNDS;
+
     for (int i = 0; i < MAX_EVENTS; i++)
     {
         if (scheduledEvents[i].id == UNUSED)

@@ -137,6 +137,32 @@ TEST(LightScheduler, RemoveRecyclesScheduleSlot)
     LONGS_EQUAL(LS_OK, LightScheduler_ScheduleTurnOn(6, WEEKEND, 700));
 }
 
+TEST(LightScheduler, RemoveMultipleScheduledEvent)
+{
+    LightScheduler_ScheduleTurnOn(6, MONDAY, 600);
+    LightScheduler_ScheduleTurnOn(7, MONDAY, 600);
+    LightScheduler_ScheduleRemove(6, MONDAY, 600);
+
+    setTimeTo(MONDAY, 600);
+    LightScheduler_Wakeup();
+
+    checkLedState(6, LIGHT_STATE_UNKNOWN);
+    checkLedState(7, LIGHT_ON);
+}
+
+TEST(LightScheduler, AcceptValidLightIds)
+{
+    LONGS_EQUAL(LS_OK, LightScheduler_ScheduleTurnOn(0, WEEKEND, 700));
+    LONGS_EQUAL(LS_OK, LightScheduler_ScheduleTurnOn(15, WEEKEND, 700));
+    LONGS_EQUAL(LS_OK, LightScheduler_ScheduleTurnOn(31, WEEKEND, 700));
+}
+
+TEST(LightScheduler, RejectInvalidLightIds)
+{
+    LONGS_EQUAL(LS_ID_OUT_OF_BOUNDS, LightScheduler_ScheduleTurnOn(-1, WEEKEND, 700));
+    LONGS_EQUAL(LS_ID_OUT_OF_BOUNDS, LightScheduler_ScheduleTurnOn(32, WEEKEND, 700));
+}
+
 TEST_GROUP(LightSchedulerInitAndCleanup)
 {};
 
