@@ -14,3 +14,7 @@ objs/tests/HomeAutomation/LightSchedulerTest.d
 objs/tests/HomeAutomation/LightSchedulerTest.o
 objs/src/HomeAutomation/LightScheduler.d
 objs/src/HomeAutomation/LightScheduler.o
+objs/src/HomeAutomation/RandomMinute.d
+objs/src/HomeAutomation/RandomMinute.o
+objs/tests/HomeAutomation/RandomMinuteTest.d
+objs/tests/HomeAutomation/RandomMinuteTest.o
