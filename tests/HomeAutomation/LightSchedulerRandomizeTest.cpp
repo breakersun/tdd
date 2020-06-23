@@ -44,4 +44,10 @@ TEST_GROUP(LightSchedulerRandomizeTest)
 
 TEST(LightSchedulerRandomizeTest, TurnsOnEarly)
 {
+    FakeRandomMinute_SetFirstAndIncrement(-10, 5);
+    LightScheduler_ScheduleTurnOn(4, EVERYDAY, 600);
+    LightScheduler_Randomize(4, EVERYDAY, 600);
+    setTimeTo(MONDAY, 600-10);
+    LightScheduler_Wakeup();
+    checkLedState(4, LIGHT_ON);
 }
