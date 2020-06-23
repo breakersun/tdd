@@ -53,7 +53,6 @@ TEST(RandomMinute, AllValuesPossible)
         hit[minute + BOUND]++;
     }
     for (i = 0; i < 2* BOUND + 1; i++) {
-        // printf("hit[%d] = %d\n", i, hit[i]);
         CHECK(hit[i] > 0);
     }
 }
