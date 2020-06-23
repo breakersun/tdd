@@ -19,3 +19,7 @@ objs/src/HomeAutomation/RandomMinute.o
 objs/tests/HomeAutomation/RandomMinuteTest.d
 objs/tests/HomeAutomation/RandomMinuteTest.o
 .vscode/c_cpp_properties.json
+objs/mocks/FakeRandomMinute.d
+objs/mocks/FakeRandomMinute.o
+objs/tests/HomeAutomation/LightSchedulerRandomizeTest.d
+objs/tests/HomeAutomation/LightSchedulerRandomizeTest.o
