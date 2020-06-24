@@ -15,6 +15,7 @@ TEST_GROUP(LightSchedulerRandomizeTest)
     {
         LightController_Create();
         LightScheduler_Create();
+        UT_PTR_SET(RandomMinute_Get, FakeRandomMinute_Get);
     }
 
     void teardown()
@@ -47,7 +48,7 @@ TEST(LightSchedulerRandomizeTest, TurnsOnEarly)
     FakeRandomMinute_SetFirstAndIncrement(-10, 5);
     LightScheduler_ScheduleTurnOn(4, EVERYDAY, 600);
     LightScheduler_Randomize(4, EVERYDAY, 600);
-    setTimeTo(MONDAY, 600-10);
+    setTimeTo(MONDAY, 600 - 5);
     LightScheduler_Wakeup();
     checkLedState(4, LIGHT_ON);
 }

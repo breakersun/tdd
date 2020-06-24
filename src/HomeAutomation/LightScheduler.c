@@ -1,11 +1,12 @@
 #include "LightScheduler.h"
 #include "LightController.h"
 #include "common.h"
+#include "RandomMinute.h"
 
 enum
 {
     UNUSED = -1,
-    TURN_OFF, TURN_ON,
+    TURN_OFF, TURN_ON, RANDOM_ON, RANDOM_OFF
 };
 
 typedef struct
@@ -14,6 +15,8 @@ typedef struct
     int event;
     int minuteOfDay;
     int dayOfWeek;
+    int randomize;
+    int randomMinutes;
 } ScheduledLightEvent;
 
 static ScheduledLightEvent scheduledEvents[MAX_EVENTS];
@@ -37,6 +40,11 @@ static void operateLight(ScheduledLightEvent *lightevent)
         LightController_On(lightevent->id);
     else if(lightevent->event == TURN_OFF)
         LightController_Off(lightevent->id);
+
+    // if (lightevent->randomize == RANDOM_ON)
+    //     lightevent->randomMinutes = RandomMinute_Get();
+    // else
+    //     lightevent->randomMinutes = 0;
 }
 
 static int DoesLightRespondToday(Time *time, int reactionDay)
@@ -60,7 +68,7 @@ static void processEventDueNow(Time *time, ScheduledLightEvent *lightevent)
         return;
     if(!DoesLightRespondToday(time, lightevent->dayOfWeek))
         return;
-    if(lightevent->minuteOfDay != time->minuteOfDay)
+    if(lightevent->minuteOfDay + lightevent->randomMinutes != time->minuteOfDay)
         return;
     
     operateLight(lightevent);
@@ -88,6 +96,8 @@ static int scheduleEvent(int id, int event, int minutes, int day)
             scheduledEvents[i].event        = event;
             scheduledEvents[i].minuteOfDay  = minutes;
             scheduledEvents[i].dayOfWeek    = day;
+            scheduledEvents[i].randomize    = RANDOM_OFF;
+            scheduledEvents[i].randomMinutes = 0;
             return LS_OK;
         }
     }
@@ -120,5 +130,14 @@ void LightScheduler_ScheduleRemove(int id, int day, int minutes)
 
 void LightScheduler_Randomize(int id, int day, int minuteOfDay)
 {
-
+    int i;
+    for (i = 0; i < MAX_EVENTS; i++)
+    {
+        ScheduledLightEvent * e = &scheduledEvents[i];
+        if (e->id == id && e->dayOfWeek == day && e->minuteOfDay == minuteOfDay)
+        {
+            e->randomize = RANDOM_ON;
+            e->randomMinutes = RandomMinute_Get();
+        }
+    }
 }
