@@ -12,6 +12,7 @@ PROJECT_HOME_DIR = .
 
 SRC_DIRS = \
 	src/HomeAutomation \
+	src/util \
 
 TEST_SRC_DIRS = \
 	tests \
