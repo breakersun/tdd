@@ -17,6 +17,7 @@ SRC_DIRS = \
 TEST_SRC_DIRS = \
 	tests \
 	tests/HomeAutomation\
+	tests/util \
 	mocks \ 
 
 	

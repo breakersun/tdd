@@ -28,3 +28,5 @@ objs/src/util/Utils.d
 objs/src/util/Utils.o
 objs/mocks/FormatOutputSpyTest.o
 objs/mocks/FormatOutputSpyTest.d
+*.d
+*.o
