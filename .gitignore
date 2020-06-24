@@ -23,3 +23,4 @@ objs/mocks/FakeRandomMinute.d
 objs/mocks/FakeRandomMinute.o
 objs/tests/HomeAutomation/LightSchedulerRandomizeTest.d
 objs/tests/HomeAutomation/LightSchedulerRandomizeTest.o
+.vscode/settings.json
