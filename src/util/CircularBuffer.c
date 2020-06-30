@@ -48,16 +48,32 @@ int CircularBuffer_IsFull(CircularBuffer self)
 
 int CircularBuffer_Put(CircularBuffer self, int value)
 {
+    if (self->count >= self->capacity)
+        return 0;
+
     self->count++;
     self->values[self->index++] = value;
+
+    if (self->index >= self->capacity)
+        self->index = 0;
 
     return 1;
 }
 
 int CircularBuffer_Get(CircularBuffer self)
 {
+    int value;
+
+    if (self->count <= 0)
+        return -1;
+
     self->count--;
-    return (self->values[self->outdex++]);
+    value = self->values[self->outdex++];
+
+    if (self->outdex >= self->capacity)
+        self->outdex = 0;
+
+    return value;
 }
 
 int CircularBuffer_Capacity(CircularBuffer self)
