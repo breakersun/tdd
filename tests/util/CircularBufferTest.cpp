@@ -154,3 +154,16 @@ TEST(CircularBuffer, PrintEmpty)
     STRCMP_EQUAL(expectedOutput, FormatOutputSpy_GetOutput());
     FormatOutputSpy_Destroy();
 }
+
+TEST(CircularBuffer, PrintAfterOneIsPut)
+{
+    const char * expectedOutput = "Circular buffer content:\n<17>\n";
+    FormatOutputSpy_Create(100);
+    UT_PTR_SET(FormatOutput, FormatOutputSpy);
+
+    CircularBuffer_Put(buffer, 17);
+    CircularBuffer_Print(buffer);
+
+    STRCMP_EQUAL(expectedOutput, FormatOutputSpy_GetOutput());
+    FormatOutputSpy_Destroy();
+}

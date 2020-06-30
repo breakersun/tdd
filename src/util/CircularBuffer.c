@@ -83,5 +83,19 @@ int CircularBuffer_Capacity(CircularBuffer self)
 
 void CircularBuffer_Print(CircularBuffer self)
 {
-    FormatOutput("Circular buffer content:\n<>\n");
+    int currentValue = self->outdex;
+
+    FormatOutput("Circular buffer content:\n<");
+
+    for (int i = 0; i < self->count; i++)
+    {
+        if (i != 0)
+            FormatOutput(", ");
+        FormatOutput("%d", self->values[currentValue++]);
+
+        if (currentValue >= self->capacity)
+            currentValue = 0;
+    }
+
+    FormatOutput(">\n");
 }
