@@ -89,7 +89,7 @@ void CircularBuffer_Print(CircularBuffer self)
 
     for (int i = 0; i < self->count; i++)
     {
-        if (i != 0)
+        if (i > 0)
             FormatOutput(", ");
         FormatOutput("%d", self->values[currentValue++]);
 
