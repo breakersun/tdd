@@ -12,4 +12,5 @@ int CircularBuffer_Get(CircularBuffer);
 int CircularBuffer_Capacity(CircularBuffer);
 void CircularBuffer_Print(CircularBuffer);
 int CircularBuffer_VerifyIntegrity(CircularBuffer);
+void CircularBuffer_Print(CircularBuffer);
 #endif

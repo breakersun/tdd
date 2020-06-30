@@ -80,3 +80,8 @@ int CircularBuffer_Capacity(CircularBuffer self)
 {
     return self->capacity;
 }
+
+void CircularBuffer_Print(CircularBuffer self)
+{
+    FormatOutput("Circular buffer content:\n<>\n");
+}

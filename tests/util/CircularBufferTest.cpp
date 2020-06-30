@@ -142,3 +142,15 @@ TEST(CircularBuffer, GetFromEmptyReturns0)
 {
     LONGS_EQUAL(-1, CircularBuffer_Get(buffer));
 }
+
+TEST(CircularBuffer, PrintEmpty)
+{
+    const char * expectedOutput = "Circular buffer content:\n<>\n";
+    FormatOutputSpy_Create(100);
+    UT_PTR_SET(FormatOutput, FormatOutputSpy);
+
+    CircularBuffer_Print(buffer);
+
+    STRCMP_EQUAL(expectedOutput, FormatOutputSpy_GetOutput());
+    FormatOutputSpy_Destroy();
+}
