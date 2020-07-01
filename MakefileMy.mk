@@ -24,8 +24,9 @@ TEST_SRC_DIRS = \
 INCLUDE_DIRS =\
   $(CPPUTEST_HOME)/include\
   include/HomeAutomation\
+  include/IO\
   include/util\
-  mocks \  
+  mocks \
 	
 CPPUTEST_WARNINGFLAGS = -Wall -Wswitch-default
 CPPUTEST_CFLAGS += -Wall -Wstrict-prototypes -pedantic
