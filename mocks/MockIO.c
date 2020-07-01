@@ -100,6 +100,12 @@ void MockIO_Expect_Write(ioAddress addr, ioData data)
     recordExpectation(FLASH_WRITE, addr, data);
 }
 
+void MockIO_Expect_ReadThenReturn(ioAddress addr, ioData data)
+{
+    failWhenNoRoomForExpectations(report_too_many_write_expectations);
+    recordExpectation(FLASH_READ, addr, data);
+}
+
 void static setExpectedAndActual(ioAddress addr, ioData data)
 {
     expected.addr = expectations[getExpectationCount].addr;
@@ -150,7 +156,7 @@ static void failWhen(int condition, char * expectationFailMessage)
         failExpectation(expectationFailMessage);
 }
 
-static int expectationKindIsNot(int kind)
+static int expectedKindIsNot(int kind)
 {
     return kind != expectations[getExpectationCount].kind;
 }
@@ -171,8 +177,19 @@ void IO_Write(ioAddress addr, ioData data)
     setExpectedAndActual(addr, data);
     failWhenNotInitialized();
     failWhenNoUnusedExpectations(report_write_but_out_of_expectations);
-    failWhen(expectationKindIsNot(FLASH_WRITE), report_expect_read_was_write);
+    failWhen(expectedKindIsNot(FLASH_WRITE), report_expect_read_was_write);
     failWhen(expectedAddressIsNot(addr), report_write_does_not_match);
     failWhen(expectedDataIsNot(data), report_write_does_not_match);
     getExpectationCount++;
+}
+
+ioData IO_Read(ioAddress addr)
+{
+    setExpectedAndActual(addr, NoExpectedValue);
+    failWhenNotInitialized();
+    failWhenNoUnusedExpectations(report_write_but_out_of_expectations);
+    failWhen(expectedKindIsNot(FLASH_READ), report_expect_write_was_read);
+    failWhen(expectedAddressIsNot(addr), report_read_wrong_address);
+
+    return expectations[getExpectationCount++].value;
 }

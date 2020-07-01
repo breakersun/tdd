@@ -49,7 +49,7 @@ static void CanCatchExpectations()
 {
     // MockIO_Expect_ReadThenReturn(1, 2);
     MockIO_Expect_Write(1, 2);
-    IO_Write(1, 1);
+    IO_Write(1, 2);
 }
 
 TEST(MockIO, CanCatchExpectations)
@@ -57,4 +57,28 @@ TEST(MockIO, CanCatchExpectations)
     expectedErrors = 0;
     testFailureWith(CanCatchExpectations);
     fixture->assertPrintContains("OK");
+}
+
+static void WriteWhenReadExpectedFails()
+{
+    MockIO_Expect_ReadThenReturn(0, 1);
+    IO_Write(0, 0);
+}
+TEST(MockIO, WriteWhenReadExpectedFails)
+{
+    testFailureWith(WriteWhenReadExpectedFails);
+    fixture->assertPrintContains("Expected IO_Read(0x0) would return 0x1");
+    fixture->assertPrintContains("But was IO_Write(0x0, 0x0)");
+}
+
+static void ReadWhenWriteExpectedFails()
+{
+    MockIO_Expect_Write(0, 1);
+    IO_Read(0);
+}
+TEST(MockIO, ReadWhenWriteExpectedFails)
+{
+    testFailureWith(ReadWhenWriteExpectedFails);
+    fixture->assertPrintContains("Expected IO_Write(0x0, 0x1)");
+    fixture->assertPrintContains("But was IO_Read(0x0)");
 }
