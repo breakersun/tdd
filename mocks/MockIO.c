@@ -102,7 +102,7 @@ void MockIO_Expect_Write(ioAddress addr, ioData data)
 
 void MockIO_Expect_ReadThenReturn(ioAddress addr, ioData data)
 {
-    failWhenNoRoomForExpectations(report_too_many_write_expectations);
+    failWhenNoRoomForExpectations(report_too_many_read_expectations);
     recordExpectation(FLASH_READ, addr, data);
 }
 
@@ -187,9 +187,28 @@ ioData IO_Read(ioAddress addr)
 {
     setExpectedAndActual(addr, NoExpectedValue);
     failWhenNotInitialized();
-    failWhenNoUnusedExpectations(report_write_but_out_of_expectations);
+    failWhenNoUnusedExpectations(report_read_but_out_of_expectations);
     failWhen(expectedKindIsNot(FLASH_READ), report_expect_write_was_read);
     failWhen(expectedAddressIsNot(addr), report_read_wrong_address);
 
     return expectations[getExpectationCount++].value;
+}
+
+static void failWhenNotAllExpectationsUsed(void)
+{
+    char format[] = "Expected %d reads/writes but got %d";
+    char msg[sizeof(format) + 5 + 5];
+
+    if (getExpectationCount == setExpectationCount)
+        return;
+
+    snprintf(msg, sizeof(msg), format, setExpectationCount, getExpectationCount);
+    fail(msg);
+}
+
+void MockIO_Verify_Complete(void)
+{
+    if (failureAlreadyReported)
+        return;
+    failWhenNotAllExpectationsUsed();
 }
